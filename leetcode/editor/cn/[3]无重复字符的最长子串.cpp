@@ -44,12 +44,28 @@
 // 
 // Related Topics 哈希表 字符串 滑动窗口 👍 6662 👎 0
 
-
+#include<string>
+#include<unordered_map>
+using namespace std;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-
+        int res = 0;
+        unordered_map<char, int> hashtable;
+        for(int i = 0, j = 0; i < s.size(); i ++)
+        {
+            auto it = hashtable.find(s[i]);
+            if(it == hashtable.end()) hashtable[s[i]] = 1;
+            else hashtable[s[i]] ++;
+            while(hashtable[s[i]] > 1)
+            {
+                hashtable[s[j]] --;
+                j ++;
+            }
+            res = max(res, i - j + 1);
+        }
+        return res;
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)

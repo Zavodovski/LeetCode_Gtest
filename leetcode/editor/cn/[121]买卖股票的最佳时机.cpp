@@ -39,7 +39,14 @@ using namespace std;
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-
+        int minv = 1e9;
+        int profit = 0;
+        for(int i = 0; i < prices.size(); i ++)
+        {
+            minv = min(minv, prices[i]);
+            profit = max(prices[i] - minv, profit);
+        }
+        return profit;
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)

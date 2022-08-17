@@ -56,53 +56,30 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* l3;
-        ListNode* CurrentNode_l1 = l1;
-        ListNode* CurrentNode_l2 = l2;
-        ListNode* CurrentNode_l3 = l3;
-        int plus = 0;
-        while(CurrentNode_l1->next != nullptr && CurrentNode_l2->next != nullptr)
+        ListNode* head = nullptr;
+        ListNode* tail = nullptr;
+        int carry = 0;
+        while(l1 || l2)
         {
-            CurrentNode_l3->val = CurrentNode_l1->val + CurrentNode_l2->val + plus;
-            plus = 0;
-            if(CurrentNode_l3->val>10)
+            int val1 = l1 ? l1->val : 0;
+            int val2 = l2 ? l2->val : 0;
+            int sum = val1 + val2 + carry;
+            carry = sum / 10;
+            if(!head)
             {
-                CurrentNode_l3->val = 0;
-                plus = 1;
+                head = new ListNode(sum % 10);
+                tail = head;
             }
-            CurrentNode_l1 = CurrentNode_l1->next;
-            CurrentNode_l2 = CurrentNode_l2->next;
-            CurrentNode_l3 = CurrentNode_l3->next;
-            l3->next = CurrentNode_l3->next;
-        }
-        if(CurrentNode_l1->next == nullptr)
-        {
-            while (CurrentNode_l2->next != nullptr)
+            else
             {
-                CurrentNode_l3->val = CurrentNode_l2->val + plus;
-                plus = 0;
-                if (CurrentNode_l3->val > 10)
-                {
-                    CurrentNode_l3->val = 0;
-                    plus = 1;
-                }
-                CurrentNode_l2 = CurrentNode_l2->next;
+                tail->next = new ListNode(sum % 10);
+                tail = tail->next;
             }
+            if(l1) l1 = l1->next;
+            if(l2) l2 = l2->next;
         }
-        if(CurrentNode_l2->next == nullptr)
-        {
-            while (CurrentNode_l1->next != nullptr)
-            {
-                CurrentNode_l3->val = CurrentNode_l1->val + plus;
-                plus = 0;
-                if (CurrentNode_l3->val > 10) {
-                    CurrentNode_l3->val = 0;
-                    plus = 1;
-                }
-                CurrentNode_l1 = CurrentNode_l1->next;
-            }
-        }
-        return l3;
+        if(carry > 0) tail->next = new ListNode(1);
+        return head;
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)
